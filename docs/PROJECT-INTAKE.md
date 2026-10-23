@@ -23,7 +23,6 @@ Run `npm run project:add`. It prompts for metadata and writes the catalog atomic
 - Exclude a discovered repository: add its numeric repository ID to `config/ignored-repositories.json`.
 - Remove: delete deliberately. Keep its case number in `config/case-numbers.json`; the intake scripts never reuse reserved numbers.
 - Refresh metadata only: run `npm run project:sync`.
-- Highlight the founding project: set `foundingProject: true` on one record. It appears first without changing its permanent case number.
 
 Not discovered means a repository is private, lacks the topic, or is excluded by fork/archive settings. Ignored means its numeric ID is in the ignore file. Imported but hidden means it is in the catalog with `visible: false`. Approved means it is in the catalog with `visible: true` after PR review.
 

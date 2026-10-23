@@ -3,16 +3,18 @@ import {filterProjects,visibleProjects} from '../src/lib/projectFilters';
 import {catalogSchema,statusLabels,type Project} from '../src/lib/projectSchema';
 import {syncCatalog,type Repo} from '../scripts/github';
 import {nextCase,serialize} from '../scripts/catalog';
+import rawProjects from '../src/data/projects.json';
 
 const base:Project={id:'manual-1',slug:'sample',caseId:'DQD-001',source:'manual',classification:'public',visible:true,name:'Sample',department:'Research',description:'A complicated answer',observation:'Very official',status:'proposed',tags:['test']};
 const repo:Repo={id:42,name:'example',full_name:'owner/example',html_url:'https://github.com/owner/example',description:'GitHub copy',homepage:null,topics:['dqd-project'],stargazers_count:3,archived:false,fork:false,private:false,owner:{login:'owner'}};
-describe('founding project',()=>{
-  it('appears first without changing assigned case numbers',()=>{
-    const founding={...base,id:'noura',slug:'noura',caseId:'DQD-004',name:'Noura',foundingProject:true};
-    expect(visibleProjects([base,founding]).map(p=>p.caseId)).toEqual(['DQD-004','DQD-001']);
-  });
-  it('allows only one founding project',()=>{
-    expect(()=>catalogSchema.parse([base,{...base,id:'a',slug:'a',caseId:'DQD-002',foundingProject:true},{...base,id:'b',slug:'b',caseId:'DQD-003',foundingProject:true}])).toThrow();
+describe('case assignment',()=>{
+  it('assigns Noura 001 and orders the current registry by case',()=>{
+    expect(visibleProjects(catalogSchema.parse(rawProjects)).map(p=>[p.caseId,p.name])).toEqual([
+      ['DQD-001','Noura'],
+      ['DQD-002','Dungeons & Drumsticks'],
+      ['DQD-003','The Fellowship of the Cart'],
+      ['DQD-004','The Watchtower'],
+    ]);
   });
 });
 describe('project and source visibility',()=>{

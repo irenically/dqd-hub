@@ -18,12 +18,11 @@ describe('project card destinations',()=>{
     expect(screen.queryByRole('link')).toBeNull();
   });
   it('opens a public website with private source without presenting the project as secret',()=>{
-    render(<ProjectCard project={{...project,privateSource:true,foundingProject:true,repositoryUrl:undefined}}/>);
+    render(<ProjectCard project={{...project,privateSource:true,repositoryUrl:undefined}}/>);
     expect(screen.getByRole('link',{name:'Open Sample Project website in a new tab'}).getAttribute('href')).toBe(project.liveUrl);
     expect(screen.queryByRole('link',{name:/Supporting Evidence/})).toBeNull();
     expect(screen.queryByText('ABSOLUTELY SECRET PROJECT')).toBeNull();
     expect(screen.getByText('SOURCE PRIVATE')).toBeTruthy();
-    expect(screen.getByText('THE FIRST PROJECT')).toBeTruthy();
   });
   it('does not add a fake destination when a public project has no live site',()=>{
     render(<ProjectCard project={{...project,liveUrl:undefined,repositoryUrl:undefined}}/>);
