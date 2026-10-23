@@ -13,7 +13,7 @@ To associate a seeded case file with its real repository without a duplicate, ed
 
 ## Manual projects
 
-Run `npm run project:add`. It prompts for metadata and writes the catalog atomically. It requires no GitHub credentials. Commit or open a PR with the JSON change, then confirm deployment. The GitHub issue form is only a request for human review; it executes nothing. You can also edit `src/data/projects.json` through GitHub's web editor and open a PR.
+Run `npm run project:add`. It prompts for metadata and writes the catalog atomically. It requires no GitHub credentials. Choose `classification: "public"` for a public project or `classification: "secret"` to show an explicitly classified case file. A secret record must remain manual and cannot contain live or repository URLs or GitHub metadata. Set `visible: true` only if its title and description are safe to reveal on the public site; use `visible: false` to keep it off the site entirely. Commit or open a PR with the JSON change, then confirm deployment. The GitHub issue form is only a request for human review; it executes nothing. You can also edit `src/data/projects.json` through GitHub's web editor and open a PR.
 
 ## Ongoing operations
 
@@ -26,4 +26,4 @@ Run `npm run project:add`. It prompts for metadata and writes the catalog atomic
 
 Not discovered means a repository is private, lacks the topic, or is excluded by fork/archive settings. Ignored means its numeric ID is in the ignore file. Imported but hidden means it is in the catalog with `visible: false`. Approved means it is in the catalog with `visible: true` after PR review.
 
-GitHub-owned metadata refreshes without changing Department descriptions, status, visibility, custom live URLs, tags, or case IDs. Missing or inaccessible repositories remain in the catalog and are reported. The public **Questionable Proposal Form** is fictional and never registers a project.
+GitHub-owned metadata refreshes without changing Department descriptions, status, visibility, custom live URLs, tags, or case IDs. Discovery considers public repositories only. Missing or inaccessible repositories remain in the catalog and are reported. A public card opens its live site when `liveUrl` is configured; otherwise it remains a case file without a fake destination. The public **Questionable Proposal Form** is fictional and never registers a project.
