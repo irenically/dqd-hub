@@ -1,6 +1,6 @@
 # The Department of Questionable Decisions
 
-A public case file for side projects, built with Vite, React, TypeScript, Tailwind CSS, and GitHub Pages. Project content lives in version-controlled JSON. No backend or browser GitHub token is required.
+A public case file for side projects, built with Vite, React, TypeScript, Tailwind CSS, Material UI, and GitHub Pages. Project content lives in version-controlled JSON. No backend or browser GitHub token is required.
 
 ## Quick start
 
