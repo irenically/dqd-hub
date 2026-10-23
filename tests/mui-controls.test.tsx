@@ -5,16 +5,14 @@ import ProposalDialog from '../src/ProposalDialog';
 
 afterEach(cleanup);
 
-describe('MUI registry controls',()=>{
-  it('keeps search and department selection wired to the catalog state',()=>{
+describe('MUI registry search',()=>{
+  it('keeps search wired to the catalog state',()=>{
     const setQuery=vi.fn();
-    const setDepartment=vi.fn();
-    render(<RegistryFilters query="" setQuery={setQuery} department="" setDepartment={setDepartment} status="" setStatus={vi.fn()} departments={['Culinary Affairs']}/>);
+    render(<RegistryFilters query="" setQuery={setQuery}/>);
     fireEvent.change(screen.getByRole('textbox',{name:'Search case files'}),{target:{value:'Noura'}});
     expect(setQuery).toHaveBeenCalledWith('Noura');
-    fireEvent.mouseDown(screen.getByRole('combobox',{name:'Department'}));
-    fireEvent.click(within(screen.getByRole('listbox')).getByRole('option',{name:'Culinary Affairs'}));
-    expect(setDepartment).toHaveBeenCalledWith('Culinary Affairs');
+    expect(screen.queryByRole('combobox',{name:'Department'})).toBeNull();
+    expect(screen.queryByRole('combobox',{name:'Status'})).toBeNull();
   });
 });
 
