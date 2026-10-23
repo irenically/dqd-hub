@@ -23,7 +23,7 @@ describe('MUI proposal dialog',()=>{
     fireEvent.change(screen.getByRole('textbox',{name:/Nature of unnecessary complexity/}),{target:{value:'Track every spoon in the house.'}});
     fireEvent.mouseDown(screen.getByRole('combobox',{name:/Urgency/}));
     fireEvent.click(within(screen.getByRole('listbox')).getByRole('option',{name:'Unreasonably immediate'}));
-    fireEvent.click(screen.getByRole('button',{name:/Submit for immediate approval/}));
+    fireEvent.click(screen.getByRole('button',{name:/Submit for approval/}));
     expect(screen.getByText(/APPROVED/)).toBeTruthy();
     expect(screen.getByText(/No proposal was sent or saved/)).toBeTruthy();
   });
