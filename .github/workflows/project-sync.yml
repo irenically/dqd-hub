@@ -1,0 +1,47 @@
+name: Project Intake Office
+on:
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  intake:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    concurrency:
+      group: project-intake
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Discover eligible repositories
+        run: npm run project:discover
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Refresh metadata
+        run: npm run project:sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm run project:validate && npm run typecheck && npm run lint && npm test && npm run build
+      - name: Create or update review pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          add-paths: |
+            src/data/projects.json
+            config/case-numbers.json
+          branch: automation/project-intake
+          delete-branch: true
+          title: '[D.Q.D.] New incidents awaiting departmental approval'
+          body: |
+            New repositories have been identified as potential departmental incidents. Please review the attached case files before granting public clearance.
+
+            Review new case IDs, departments, descriptions, status, observations, links, and visibility. New records remain hidden until `visible` is set to `true`.
+          commit-message: 'chore: propose project catalog updates'

@@ -1,0 +1,2 @@
+import {readCatalog,readJson} from './catalog';
+const projects=await readCatalog();const ledger=await readJson<{reserved:string[]}>('config/case-numbers.json');if(new Set(ledger.reserved).size!==ledger.reserved.length)throw new Error('Duplicate reserved case number');for(const project of projects)if(!ledger.reserved.includes(project.caseId))throw new Error(`${project.caseId} missing from permanent case-number ledger`);console.log(`Validated ${projects.length} case files.`);

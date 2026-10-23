@@ -1,0 +1,30 @@
+name: Manual project request
+description: Request a case file. This does not publish a project automatically.
+title: '[Project request] '
+labels: ['project-request']
+body:
+  - type: markdown
+    attributes:
+      value: 'This is a request for human review. Do not include secrets or private source code.'
+  - type: input
+    id: name
+    attributes:
+      label: Project name
+    validations:
+      required: true
+  - type: input
+    id: department
+    attributes:
+      label: Suggested department
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Optional public URL

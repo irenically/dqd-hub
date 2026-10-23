@@ -1,0 +1,5 @@
+import {readCatalog,readJson,writeCatalog} from './catalog';
+import {discoverRepos,syncCatalog,type Config} from './github';
+import {appendFile} from 'node:fs/promises';
+
+export async function run(mode:'discover'|'sync'){const config=await readJson<Config>('config/department.json');if(!config.github.owner){console.log('GitHub owner is not configured. Set config/department.json before discovery.');return}const ignored=await readJson<{repositoryIds:number[]}>('config/ignored-repositories.json');const existing=await readCatalog();const repos=await discoverRepos(config);const {projects,report}=syncCatalog(existing,repos,ignored.repositoryIds,mode);const changed=await writeCatalog(projects);const summary=[`## Project Intake Office (${mode})`,`Changed: ${changed?'yes':'no'}`,`New: ${report.added.join(', ')||'none'}`,`Updated: ${report.updated.join(', ')||'none'}`,`Skipped: ${report.skipped.join(', ')||'none'}`,`Warnings: ${report.warnings.join('; ')||'none'}`,`Review all new case files and set visible to true only after approval.`].join('\n');console.log(summary);if(process.env.GITHUB_STEP_SUMMARY)await appendFile(process.env.GITHUB_STEP_SUMMARY,summary+'\n');}
