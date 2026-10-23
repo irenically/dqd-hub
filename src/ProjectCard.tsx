@@ -3,7 +3,7 @@ import {statusLabels,type Project} from './lib/projectSchema';
 
 export default function ProjectCard({project}:{project:Project}){
   const secret=project.classification==='secret';
-  const liveUrl=secret?undefined:project.liveUrl;
+  const liveUrl=project.liveUrl;
   const repositoryUrl=secret?undefined:project.repositoryUrl;
   return <article className={`project-card${liveUrl?' project-card-clickable':''}${secret?' project-card-secret':''}`}>
     {liveUrl&&<a className="card-overlay-link" href={liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${project.name} website in a new tab`}><span className="sr-only">Open {project.name} website</span></a>}

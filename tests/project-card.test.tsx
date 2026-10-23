@@ -17,6 +17,12 @@ describe('project card destinations',()=>{
     expect(screen.getByText('ABSOLUTELY SECRET PROJECT')).toBeTruthy();
     expect(screen.queryByRole('link')).toBeNull();
   });
+  it('opens a public website from a secret card without exposing the private repository',()=>{
+    render(<ProjectCard project={{...project,classification:'secret',repositoryUrl:undefined}}/>);
+    expect(screen.getByRole('link',{name:'Open Sample Project website in a new tab'}).getAttribute('href')).toBe(project.liveUrl);
+    expect(screen.queryByRole('link',{name:/Supporting Evidence/})).toBeNull();
+    expect(screen.getByText('ABSOLUTELY SECRET PROJECT')).toBeTruthy();
+  });
   it('does not add a fake destination when a public project has no live site',()=>{
     render(<ProjectCard project={{...project,liveUrl:undefined,repositoryUrl:undefined}}/>);
     expect(screen.queryByRole('link')).toBeNull();
